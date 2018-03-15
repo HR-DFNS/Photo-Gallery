@@ -25,47 +25,31 @@ function getEntry(id) {
   return JSON.stringify(entry);
 }
 
-function popJSON() {
-  const x1 = process.hrtime();
-  file.write('[');
-
-  for (let i = 1; i <= 1e6; i += 1) {
-    file.write(`${getEntry(i)},\n`, (err) => {
-      if (err) throw err;
-    });
-    if ((i % 100000) === 0) console.log(process.hrtime()[0] - x1[0]);
-  }
-
-  file.write(']', (err) => {
-    if (err) throw err;
-    file.end(() => {
-      console.log('Total: ', process.hrtime()[0] - x1[0]);
-    });
-  });
-}
-
 function pop10Mill(count) {
   const x1 = process.hrtime();
   const limit = 1e6;
   setTimeout(() => {
     const file = fs.createWriteStream(`newData${count}.json`);
     file.write('[');
-    
     console.log(`Populating newData${count}.json...`);
+
     for (let i = 1; i <= limit; i += 1) {
-      file.write(`${getEntry(((count * limit) + i) - limit)},\n`, (err) => {
+      let entry = getEntry(((count * limit) + i) - limit);
+      if (i !== limit) {
+        entry += ',\n';
+      }
+      file.write(entry, (err) => {
         if (err) throw err;
       });
-      if ((i % 100000) === 0) {
-        console.log(process.hrtime()[0] - x1[0]);
-      }
     }
+
     file.write(']', (err) => {
       if (err) throw err;
       file.end(() => {
         console.log('Total: ', process.hrtime()[0] - x1[0]);
       });
     });
+
     if (count <= 10) {
       pop10Mill(count + 1);
     }

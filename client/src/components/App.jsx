@@ -61,7 +61,6 @@ export default class App extends React.Component {
   setPhotosState() {
     const urls = [];
     const pics = this.state.data.photos;
-
     for (let i = 0; i < pics.length; i += 1) {
       const url = {
         src: pics[i].url,
@@ -74,11 +73,12 @@ export default class App extends React.Component {
     this.setState({
       photos: urls,
     });
+    console.log('egg');
     this.populateMainGrid();
   }
 
   assignRandomCaption() {
-    const reviews = this.state.reviews;
+    const { reviews } = this.state;
     const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
     const name = randomReview.name.toUpperCase();
     const randomCaption =
@@ -88,9 +88,10 @@ export default class App extends React.Component {
 
   populateMainGrid() {
     const display = [];
-    for (let i = 0; i < 8; i += 1) {
+    for (let i = 0; i < this.state.photos.length; i += 1) {
       display.push(this.state.photos[i]);
     }
+    console.log(display);
     this.setState({ mainGridImages: display });
   }
 

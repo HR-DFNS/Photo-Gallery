@@ -50,12 +50,15 @@ function pop10Mill(count) {
   setTimeout(() => {
     const file = fs.createWriteStream(`newData${count}.json`);
     file.write('[');
-
+    
+    console.log(`Populating newData${count}.json...`);
     for (let i = 1; i <= limit; i += 1) {
-      file.write(`${getEntry((count * limit) + i)},\n`, (err) => {
+      file.write(`${getEntry(((count * limit) + i) - limit)},\n`, (err) => {
         if (err) throw err;
       });
-      if ((i % 100000) === 0) console.log(process.hrtime()[0] - x1[0]);
+      if ((i % 100000) === 0) {
+        console.log(process.hrtime()[0] - x1[0]);
+      }
     }
     file.write(']', (err) => {
       if (err) throw err;
@@ -66,7 +69,7 @@ function pop10Mill(count) {
     if (count <= 10) {
       pop10Mill(count + 1);
     }
-  }, 10000);
+  }, 5000);
 }
 
 pop10Mill(1);

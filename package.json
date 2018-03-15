@@ -4,13 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon server/index.js",
-    "react-dev": "webpack -d --watch",
-    "seed": "node data/seed.js",
+    "start": "webpack -d && nodemon server/index.js",
+    "web": "webpack -d",
+    "seed": "time node data/newPop.js && ./seedDB",
     "test": "jest",
-    "start": "node data/seed.js && node server/index.js",
-    "localtest": "node data/seed.js && node server/index.js",
-    "newseed": "node data/newseed.js",
     "newpop": "node data/newPop.js"
   },
   "author": "",

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack -d && nodemon server/index.js",
     "web": "webpack -d",
-    "seed": "time node data/newPop.js && ./seedDB",
+    "seed": "time node data/newPopMDB.js && ./seedDB",
     "test": "jest",
     "newpop": "node data/newPop.js"
   },

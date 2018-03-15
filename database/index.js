@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const PhotosSchema = mongoose.Schema({
-  ref: String,
   url: String,
   width: Number,
   height: Number,
@@ -14,7 +13,7 @@ const ReviewSchema = mongoose.Schema({
 
 const photoSchema = mongoose.Schema({
   place_id: {
-    type: String,
+    type: Number,
     unique: true,
   },
   place_name: String,
@@ -26,7 +25,11 @@ const Photos = mongoose.model('Photos', photoSchema);
 
 // check if database is already seeded;
 function isSeeded() {
-  return Photos.count();
+  console.log('checking db...');
+  Photos.count({}, (err, count) => {
+    if (err) throw err;
+    console.log(count);
+  });
 }
 
 // findAll retrieves all stories
@@ -36,7 +39,7 @@ function findAll(callback) {
 
 // findOne will retrieve the photo associated with the given id
 function findOne(id, callback) {
-  console.log('database finding by id:', id)
+  console.log('database finding by id:', id);
   Photos.find({
     place_id: id,
   }, callback);

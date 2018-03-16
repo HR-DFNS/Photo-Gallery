@@ -1,4 +1,3 @@
-const request = require('supertest')
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -7,7 +6,7 @@ const path = require('path');
 
 mongoose.connect('mongodb://localhost/photos');
 
-const Photos = require('../database/index.js');
+const Photos = require('../database/sqlIndex.js');
 
 const app = express();
 
@@ -25,15 +24,26 @@ app.get('/', (req, res) => {
 
 // retrieve data from API(db)
 app.get('/api/restaurants/:id/gallery', (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   console.log('server querying for id: ', id);
 
-  Photos.findOne(id, (err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
+  Photos.findOne(id, (data) => {
+    const result = { place_name: data[0].place_name };
+    result.photos = [];
+    result.reviews = [];
+    for (let i = 0; i < data.length; i++) {
+      result.photos.push({
+        url: JSON.parse(data[i].url),
+        width: data[i].width,
+        height: data[i].height,
+      });
+      result.reviews.push({
+        name: JSON.parse(data[i].name),
+        avata: data[i].avatar,
+      });
     }
+    console.log(result);
+    res.json([result]);
   });
 });
 

@@ -1,0 +1,16 @@
+G='\033[;32m'
+NC='\033[0m'
+	time mongoimport --db photos --collection photos --drop --file /Users/matthewsweeney/Photo-Gallery/data/MDB/s/newData1.json --jsonArray --numInsertionWorkers 4
+
+for(( i=2; i <= 10; i++))
+do
+	echo "seeding from newData$i.json"
+	time mongoimport --db photos --collection photos --file /Users/matthewsweeney/Photo-Gallery/data/MDB/s/newData$i.json --jsonArray --numInsertionWorkers 4
+done
+mongo < /Users/matthewsweeney/Photo-Gallery/data/MDB/createIndex.js
+echo -e "${G}  ┏╮"
+echo -e "${G}  ┃┃"
+echo -e "${G}▉━╯┗━╮"
+echo -e "${G}▉┈┈┈┈┃"
+echo -e "${G}▉╮┈┈┈┃"
+echo -e "${G} ╰━━━╯${NC}"

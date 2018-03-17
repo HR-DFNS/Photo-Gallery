@@ -17,21 +17,18 @@ function getReviewer(id) {
 
 
 function pop10Mill(count) {
-  const place = fs.createWriteStream(`./data/SQLData/s${count}/places.txt`);
-  const photo = fs.createWriteStream(`./data/SQLData/s${count}/photos.txt`);
-  const reviewer = fs.createWriteStream(`./data/SQLData/s${count}/reviewers.txt`);
+  const place = fs.createWriteStream(`./data/SQL/3T/s${count}/places.txt`);
+  const photo = fs.createWriteStream(`./data/SQL/3T/s${count}/photos.txt`);
+  const reviewer = fs.createWriteStream(`./data/SQL/3T/s${count}/reviewers.txt`);
 
   const limit = 1000000;
   let pidx = ((count * limit * 3) + 1) - (limit * 3);
-  let ridx = ((count * limit * 3) + 1) - (limit * 3);
   for (let i = 1; i <= limit; i++) {
     const idx = ((count * limit) + i) - limit;
-    const r1 = ridx++;
-    const r2 = ridx++;
-    const r3 = ridx++;
     place.write(getPlace(idx), () => {
-      photo.write(getPhoto(pidx++, idx, r1) + getPhoto(pidx++, idx, r2) + getPhoto(pidx++, idx, r3), () => {
-        reviewer.write(getReviewer(r1) + getReviewer(r2) + getReviewer(r3), () => {
+      reviewer.write(getReviewer(idx), () => {
+        photo.write(getPhoto(pidx++, idx, idx) +
+                    getPhoto(pidx++, idx, idx) + getPhoto(pidx++, idx, idx), () => {
           if (i === limit) {
             console.log(count, 'done...');
             place.end(() => {

@@ -27,9 +27,9 @@ function getEntry(id) {
 
 function pop10Mill(count) {
   const x1 = process.hrtime();
-  const limit = 1e6;
+  const limit = 1000000;
   setTimeout(() => {
-    const file = fs.createWriteStream(`newData${count}.json`);
+    const file = fs.createWriteStream(`./data/MDB/s/newData${count}.json`);
     file.write('[');
     console.log(`Populating newData${count}.json...`);
 

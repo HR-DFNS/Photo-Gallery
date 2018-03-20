@@ -20,7 +20,21 @@ const db = mysql.createConnection({
 function findOne(id, callback) {
   db.execute(`SELECT * FROM places1 WHERE id=${id};`, (qerr, res) => {
     if (qerr) throw qerr;
-    callback(res);
+    const result = { place_name: res[0].place_name };
+    result.photos = [];
+    result.reviews = [];
+    for (let i = 1; i <= 3; i++) {
+      result.photos.push({
+        url: res[0][`url${i}`],
+        width: res[0][`width${i}`],
+        height: res[0][`height${i}`],
+      });
+      result.reviews.push({
+        name: res[0][`rname${i}`],
+        avatar: res[0][`avatar${i}`],
+      });
+    }
+    callback([result]);
   });
 }
 function findThree(id, callback) {
@@ -29,7 +43,22 @@ function findThree(id, callback) {
   JOIN reviewers ON photos.reviewer_id=reviewers.id 
   WHERE places.id=${id};`, (qerr, res) => {
     if (qerr) throw qerr;
-    callback(res);
+
+    const result = { place_name: res[0].place_name };
+    result.photos = [];
+    result.reviews = [];
+    for (let i = 0; i < res.length; i++) {
+      result.photos.push({
+        url: JSON.parse(res[i].url),
+        width: res[i].width,
+        height: res[i].height,
+      });
+      result.reviews.push({
+        name: JSON.parse(res[i].name),
+        avata: res[i].avatar,
+      });
+    }
+    callback([result]);
   });
 }
 

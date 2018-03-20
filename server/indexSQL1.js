@@ -25,23 +25,8 @@ app.get('/api/restaurants/:id/gallery', (req, res) => {
   // console.log('server querying for id: ', id);
 
   Photos.findOne(id, (data) => {
-    const result = { place_name: data[0].place_name };
-    result.photos = [];
-    result.reviews = [];
-    for (let i = 1; i <= 3; i++) {
-      result.photos.push({
-        url: data[0][`url${i}`],
-        width: data[0][`width${i}`],
-        height: data[0][`height${i}`],
-      });
-      result.reviews.push({
-        name: data[0][`rname${i}`],
-        avatar: data[0][`avatar${i}`],
-      });
-    }
-    res.status(200);
-    console.log(result);
-    res.json([result]);
+    res.status(290);
+    res.json(data);
   });
 });
 

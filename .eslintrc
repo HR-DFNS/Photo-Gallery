@@ -20,6 +20,7 @@
     "no-console": 0,
     "no-param-reassign": 0,
     "no-loop-func": 0,
-    "no-trailing-spaces": [2, { "skipBlankLines": true }]
+    "no-trailing-spaces": [2, { "skipBlankLines": true }],
+    "space-infix-ops": 0
   }
 }

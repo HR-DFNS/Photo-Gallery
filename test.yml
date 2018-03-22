@@ -1,5 +1,5 @@
 config:
-  target: 'http://localhost:3001/restaurants'
+  target: 'http://13.56.187.146/api/restaurants'
 
   phases:
     - duration: 10
@@ -8,5 +8,5 @@ scenarios:
   - flow:
     - loop:
       - get:
-          url: "/{{$randomNumber(1,10000000)}}/"
+          url: "/{{$randomNumber(1,10000000)}}/gallery"
       count: 200

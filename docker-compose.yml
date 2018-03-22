@@ -9,4 +9,7 @@ services:
       - '80:3001'
 
   database:
-    image: mongo:3.6.2
+    image: mysql:5.7
+    MYSQL_DATABASE: PhotoGallery
+    MYSQL_USER: root
+    

@@ -1,8 +1,8 @@
 const mysql = require('mysql2');
 
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: '184.72.16.83',
+  user: 'gallery',
   password: '',
   database: 'PhotoGallery',
 });
@@ -37,13 +37,12 @@ function findOne(id, callback) {
     callback([result]);
   });
 }
-function findThree(id, callback) {
-  db.execute(`SELECT places.name as place_name, photos.url, photos.width, photos.height, reviewers.name, reviewers.avatar FROM photos
-  JOIN places ON photos.places_id=places.id 
-  JOIN reviewers ON photos.reviewer_id=reviewers.id 
-  WHERE places.id=${id};`, (qerr, res) => {
-    if (qerr) throw qerr;
 
+// select pl.name as place_name, ph.url, ph.width, ph.height, r.name, r.avatar from places as pl join places_photos as pp on pp.place_id=pl.id join photos as ph on pp.photo_id=ph.id join reviewers as r on ph.reviewer_id=r.id where pl.id=1
+function findThree(id, callback) {
+  db.execute(`select pl.name as place_name, ph.url, ph.width, ph.height, r.name, r.avatar from places as pl join places_photos as pp on pp.place_id=pl.id join photos as ph on pp.photo_id=ph.id join reviewers as r on ph.reviewer_id=r.id where pl.id=${id};`, (qerr, res) => {
+    if (qerr) throw qerr;
+  console.log(res);
     const result = { place_name: res[0].place_name };
     result.photos = [];
     result.reviews = [];

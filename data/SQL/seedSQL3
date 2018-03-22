@@ -2,18 +2,47 @@ G='\033[;32m'
 NC='\033[0m'
   mysql -u root < /Users/matthewsweeney/Photo-Gallery/data/SQL/setupTables3.sql
 
+/Users/matthewsweeney/Photo-Gallery/data/SQL/3T/s3/places_photos.txt
+for(( i=1; i <= 10; i++))
+do
+	echo "seeding from s$i/reviewers.txt"
+	mysql -u root PhotoGallery -e "LOAD DATA INFILE '/Users/matthewsweeney/Photo-Gallery//data/SQL/3T/s$i/reviewers.txt' INTO TABLE reviewers;"
+done
+	echo "seeding from photos.txt"
+	mysql -u root PhotoGallery -e "LOAD DATA INFILE '/Users/matthewsweeney/Photo-Gallery//data/SQL/3T/photos.txt' INTO TABLE photos;"
 for(( i=1; i <= 10; i++))
 do
   echo "seeding from s$i/places.txt"
-	mysqlimport PhotoGallery /Users/matthewsweeney/Photo-Gallery/data/SQL/3T/s$i/places.txt --user root
-	echo "seeding from s$i/reviewers.txt"
-	mysqlimport PhotoGallery /Users/matthewsweeney/Photo-Gallery/data/SQL/3T/s$i/reviewers.txt --user root
-  echo "seeding from s$i/photos.txt"
-	mysqlimport PhotoGallery /Users/matthewsweeney/Photo-Gallery/data/SQL/3T/s$i/photos.txt --user root
+		mysql -u root PhotoGallery -e "LOAD DATA INFILE '/Users/matthewsweeney/Photo-Gallery//data/SQL/3T/s$i/places.txt' INTO TABLE places;"
 done
-echo -e "${G}  ┏╮"
-echo -e "${G}  ┃┃"
-echo -e "${G}▉━╯┗━╮"
-echo -e "${G}▉┈┈┈┈┃"
-echo -e "${G}▉╮┈┈┈┃"
-echo -e "${G} ╰━━━╯${NC}"
+for(( i=1; i <= 10; i++))
+do
+	echo "seeding from s$i/places_photos.txt"
+		mysql -u root PhotoGallery -e "LOAD DATA INFILE '/Users/matthewsweeney/Photo-Gallery//data/SQL/3T/s$i/places_photos.txt' INTO TABLE places_photos;"
+done
+ 
+
+echo "‎       0000"
+echo "       00  0"
+echo "       0   00"
+echo "       0   00"
+echo "       00   00"
+echo "        0    00"
+echo "        00    000"
+echo "         00     00"
+echo "         00      00"
+echo "          0       00"
+echo "    0000000        00"
+echo "  000               000000"
+echo " 00    0000            000"
+echo " 0   000  000            00"
+echo " 00        000            0"
+echo "  00    000000            0"
+echo "  0000000    00           0"
+echo "  00       0000           0"
+echo "   000000000  00         00"
+echo "    0        0000     0000"
+echo "    00    000000    000000"
+echo "     000000    00  00"
+echo "       0     000 000"
+echo "        0000000000"

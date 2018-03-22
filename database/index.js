@@ -12,9 +12,8 @@ const ReviewSchema = mongoose.Schema({
 });
 
 const photoSchema = mongoose.Schema({
-  place_id: {
+  _id: {
     type: Number,
-    unique: true,
   },
   place_name: String,
   photos: [PhotosSchema],
@@ -41,7 +40,7 @@ function findAll(callback) {
 function findOne(id, callback) {
   // console.log('database finding by id:', id);
   Photos.find({
-    place_id: id,
+    _id: id,
   }, callback);
 }
 

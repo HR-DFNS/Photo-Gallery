@@ -11,8 +11,9 @@
     "stop": "pm2 stop all",
     "web": "webpack -d",
     "sql1": "time node data/SQL/newPopSQL1.js && time ./data/SQL/seedSQL1",
-    "sql3": "time node data/SQL/newPopSQL3.js && time ./data/SQL/seedSQL3",
+    "sql3": "node data/SQL/newPopSQL3.js && ./data/SQL/seedSQL3",
     "seedMDB": "time node data/MDB/newPopMDB.js && time ./data/MDB/seedDB",
+    "start": "node server/indexSQL3.js",
     "test": "jest",
     "monit": "pm2 monit"
   },

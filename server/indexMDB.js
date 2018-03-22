@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/photos');
+mongoose.connect('mongodb://13.57.84.103:27017/photos');
 
 
 const Photos = require('../database/index.js');
@@ -20,7 +20,7 @@ app.use('/restaurants/:id', express.static(path.join(__dirname, '../client/dist'
 
 // if no ID typed into url bar, redirect to this ID
 app.get('/', (req, res) => {
-  res.status(200).redirect('/restaurants/1000001');
+  res.status(200).redirect('/restaurants/1');
 });
 
 // retrieve data from API(db)
@@ -32,6 +32,7 @@ app.get('/api/restaurants/:id/gallery', (req, res) => {
     if (err) {
       res.sendStatus(500);
     } else {
+      data.place_id = data._id;
       res.json(data);
     }
   });

@@ -3,7 +3,7 @@ const fs = require('fs');
 
 
 function getEntry(id) {
-  const entry = { place_id: id };
+  const entry = { _id: id };
   entry.place_name = faker.company.companyName();
   const photos = [];
   const reviews = [];
@@ -29,7 +29,7 @@ function pop10Mill(count) {
   const x1 = process.hrtime();
   const limit = 1000000;
   setTimeout(() => {
-    const file = fs.createWriteStream(`./data/MDB/s/newData${count}.json`);
+    const file = fs.createWriteStream(`/Users/matthewsweeney/Photo-Gallery/data/MDB/s/newData${count}.json`);
     file.write('[');
     console.log(`Populating newData${count}.json...`);
 
@@ -50,9 +50,9 @@ function pop10Mill(count) {
       });
     });
 
-    if (count <= 10) {
-      pop10Mill(count + 1);
-    }
+     if (count < 10) {
+       pop10Mill(count + 1);
+     }
   }, 5000);
 }
 

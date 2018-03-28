@@ -65,10 +65,10 @@ const morgan = require('morgan');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-//app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 const client = redis.createClient(6379, '54.176.243.14');
-//const client = redis.createClient();
+// const client = redis.createClient();
 client.on('connect', () => {
   client.flushdb((err, succeeded) => {
     console.log(succeeded); // will be true if successfull
@@ -85,22 +85,20 @@ app.get('/', (req, res) => {
 
 // retrieve data from API(db)
 app.get('/api/restaurants/:id/gallery', (req, res) => {
-  client.exists(req.params.id, (err, reply) => {
-     if (reply === 1) {
-       client.get(req.params.id, (rerr, data) => {
-         res.json(JSON.parse([data]));
-       });
-  } else {
-      Photos.findOne(req.params.id, (dberr, data) => {
+  client.get(req.params.id, (rerr, data) => {
+    if (data) {
+      res.json(JSON.parse([data]));
+    } else {
+      Photos.findOne(req.params.id, (dberr, dbdata) => {
         if (dberr) {
           res.sendStatus(500);
         } else {
-          client.setex(req.params.id, 600, JSON.stringify(data));
-          res.json(data);
+          client.setex(req.params.id, 60, JSON.stringify(dbdata));
+          res.json(dbdata);
         }
       });
-   }
- });
+    }
+  });
 });
 
 app.listen(port, () => console.log(`Gallery App listening on port ${port}!`));

@@ -1,10 +1,12 @@
 const path = require('path');
 const mongoose = require('mongoose');
 const Photos = require('../database/index.js');
+const redis = require('redis');
 
-mongoose.connect('mongodb://localhost/photos');
+const port = 3001;
+mongoose.connect('mongodb://52.8.250.153:27017/photos');
 
-//*
+/*
 const fs = require('fs');
 const http = require('http');
 
@@ -28,6 +30,7 @@ const sendData = (id, res) => {
 };
 
 http.createServer((req, res) => {
+  console.log(req.url);
   if (req.method === 'GET') {
     if (req.url === '/') {
       res.writeHead(302, {
@@ -50,17 +53,27 @@ http.createServer((req, res) => {
       }
     }
   }
-}).listen(3001);
+}).listen(port);
 
-/*/
+/ */
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+//app.use(morgan('dev'));
+
+const client = redis.createClient(6379, '54.176.243.14');
+//const client = redis.createClient();
+client.on('connect', () => {
+  client.flushdb((err, succeeded) => {
+    console.log(succeeded); // will be true if successfull
+  });
+});
 
 // serve static files from dist dir
 app.use('/restaurants/:id', express.static(path.join(__dirname, '../client/dist')));
@@ -72,13 +85,25 @@ app.get('/', (req, res) => {
 
 // retrieve data from API(db)
 app.get('/api/restaurants/:id/gallery', (req, res) => {
-  Photos.findOne(req.params.id, (err, data) => {
-    if (err) res.sendStatus(500);
-    res.json(data);
-  });
+  client.exists(req.params.id, (err, reply) => {
+     if (reply === 1) {
+       client.get(req.params.id, (rerr, data) => {
+         res.json(JSON.parse([data]));
+       });
+  } else {
+      Photos.findOne(req.params.id, (dberr, data) => {
+        if (dberr) {
+          res.sendStatus(500);
+        } else {
+          client.setex(req.params.id, 600, JSON.stringify(data));
+          res.json(data);
+        }
+      });
+   }
+ });
 });
 
-app.listen(3001, () => console.log('Gallery App listening on port 3001!'));
+app.listen(port, () => console.log(`Gallery App listening on port ${port}!`));
 
 module.exports = app;
-//*/
+// */

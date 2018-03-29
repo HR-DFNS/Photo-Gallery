@@ -29,7 +29,7 @@ function pop10Mill(count) {
   const x1 = process.hrtime();
   const limit = 1000000;
   setTimeout(() => {
-    const file = fs.createWriteStream(`/Users/matthewsweeney/Photo-Gallery/data/MDB/s/newData${count}.json`);
+    const file = fs.createWriteStream(`/Users/matthewsweeney/PG/Photo-Gallery/data/MDB/s/newData${count}.json`);
     file.write('[');
     console.log(`Populating newData${count}.json...`);
 

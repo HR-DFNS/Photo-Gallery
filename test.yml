@@ -1,5 +1,5 @@
 config:
-  target: 'http://13.56.187.146/api/restaurants'
+  target: 'http://localhost:3001/api/restaurants'
 
   phases:
     - duration: 10

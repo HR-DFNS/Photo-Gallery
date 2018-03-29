@@ -4,7 +4,7 @@ const Photos = require('../database/index.js');
 const redis = require('redis');
 
 const port = 3001;
-mongoose.connect('mongodb://52.8.250.153:27017/photos');
+mongoose.connect('mongodb://172.31.1.135:27017/photos');
 
 /*
 const fs = require('fs');
@@ -67,7 +67,7 @@ app.use(cors());
 app.use(bodyParser.json());
 // app.use(morgan('dev'));
 
-const client = redis.createClient(6379, '54.176.243.14');
+const client = redis.createClient(6379, '172.31.12.68');
 // const client = redis.createClient();
 client.on('connect', () => {
   client.flushdb((err, succeeded) => {
@@ -80,7 +80,7 @@ app.use('/restaurants/:id', express.static(path.join(__dirname, '../client/dist'
 
 // if no ID typed into url bar, redirect to this ID
 app.get('/', (req, res) => {
-  res.status(200).redirect('/restaurants/1');
+  res.status(302).redirect('/restaurants/1');
 });
 
 // retrieve data from API(db)
@@ -93,7 +93,7 @@ app.get('/api/restaurants/:id/gallery', (req, res) => {
         if (dberr) {
           res.sendStatus(500);
         } else {
-          client.setex(req.params.id, 60, JSON.stringify(dbdata));
+          client.set(req.params.id, JSON.stringify(dbdata));
           res.json(dbdata);
         }
       });
